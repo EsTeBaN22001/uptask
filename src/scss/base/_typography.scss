@@ -1,0 +1,33 @@
+@use 'variables' as v;
+
+h1, h2, h3 {
+    font-family: v.$headingFont;
+    margin: 0 0 calc(v.$separation / 2) 0 ;
+    font-weight: 900;
+}
+h1 {
+    font-size: 4rem;
+}
+h2 {
+    font-size: 3rem;
+}
+h3 {
+    font-size: 2rem;
+}
+p {
+    font-size: 1.5rem;
+    color: v.$gray;
+    line-height: 1.8;
+}
+
+.page-description{
+    text-align: center;
+}
+
+.tagline{
+    font-family: v.$headingFont;
+    font-weight: 900;
+    color: v.$black;
+    font-size: 2rem;
+    text-align: center;
+}
