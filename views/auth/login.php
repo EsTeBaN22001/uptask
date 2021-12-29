@@ -5,6 +5,8 @@
   <div class="container-sm">
     <p class="page-description">Iniciar sesión</p>
 
+    <?php include_once(__DIR__ . './../templates/alerts.php'); ?>
+
     <form action="/" class="form" method="POST">
       <div class="field">
         <label for="email">Correo electrónico</label>
@@ -13,6 +15,7 @@
           id="email"
           name="email"
           placeholder="Ingresa tu correo electrónico"
+          value="<?= $user->email; ?>"
         >
       </div>
       <div class="field">

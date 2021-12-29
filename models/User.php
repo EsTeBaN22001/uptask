@@ -71,14 +71,44 @@ class User extends ActiveRecord{
 
   }
 
-  // Hashear contraseña
+  public function validateLogin(){
+
+    if(!$this->email){
+      self::$alerts['error'][] = 'El correo es obligatorio';
+    }
+
+    if(!filter_var($this->email, FILTER_VALIDATE_EMAIL)){
+      self::$alerts['error'][] = 'Correo no válido';
+    }
+
+    if(!$this->password){
+      self::$alerts['error'][] = 'La contraseña es obligatoria';
+    }
+
+    if(strlen($this->password) < 6){
+      self::$alerts['error'][] = 'La contraseña debe tener al menos 6 caracteres';
+    }
+
+    return self::$alerts;
+
+  }
+
   public function hashPassword(){
     $this->password = password_hash($this->password, PASSWORD_BCRYPT);
   }
 
-  // Crear un token único
   public function createToken(){
     $this->token = md5(uniqid());
+  }
+
+  public function startSession(){
+    session_unset();
+
+    $_SESSION['id'] = $this->id;
+    $_SESSION['name'] = $this->name;
+    $_SESSION['email'] = $this->email;
+    $_SESSION['login'] = true;
+
   }
 
 }

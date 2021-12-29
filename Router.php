@@ -20,6 +20,12 @@ class Router
     public function comprobarRutas()
     {
 
+        session_start();
+		// Arreglo de rutas protegidas...
+		$protectedRoutes = ['/dashboard'];
+
+		$auth = $_SESSION['login'] ?? null;
+
         $currentUrl = $_SERVER['PATH_INFO'] ?? '/';
         $method = $_SERVER['REQUEST_METHOD'];
 
@@ -29,6 +35,9 @@ class Router
             $fn = $this->postRoutes[$currentUrl] ?? null;
         }
 
+		if(in_array($currentUrl, $protectedRoutes) && !$auth){
+			header('Location: /');
+		}
 
         if ( $fn ) {
             // Call user fn va a llamar una función cuando no sabemos cual sera
