@@ -1,20 +1,11 @@
-<div class="container login">
+<div class="container resetPassword">
 
   <?php include_once(__DIR__ . './../templates/siteName.php'); ?>
 
   <div class="container-sm">
-    <p class="page-description">Iniciar sesión</p>
+    <p class="page-description">Coloca tu nueva contraseña</p>
 
-    <form action="/" class="form">
-      <div class="field">
-        <label for="email">Correo electrónico</label>
-        <input 
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Ingresa tu correo electrónico"
-        >
-      </div>
+    <form action="/reset-password" class="form">
       <div class="field">
         <label for="password">Contraseña</label>
         <input 
@@ -24,7 +15,7 @@
           placeholder="Ingresa tu contraseña"
         >
       </div>
-      <input type="submit" value="Iniciar sesión" class="button">
+      <input type="submit" value="Reestablecer" class="button">
     </form>
     <div class="actions">
       <a href="/create-account">Aún no tienes cuenta? Crear una</a>

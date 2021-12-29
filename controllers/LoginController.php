@@ -36,35 +36,43 @@ class LoginController{
 
   }
 
-  public static function forgotPassword(){
-    
-    echo "Desde forgotPassword";
+  public static function forgotPassword(Router $router){
 
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     }
 
+    $router->render('auth/forgotPassword', [
+      'title' => 'Recuperar contraseña'
+    ]);
+
   }
 
-  public static function resetPassword(){
-    
-    echo "Desde resetPassword";
+  public static function resetPassword(Router $router){
 
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     }
 
-  }
-
-  public static function message(){
-    
-    echo "Desde message";
+    $router->render('auth/reset-password', [
+      'title' => 'Reestablecer contraseña'
+    ]);
 
   }
 
-  public static function confirmAccount(){
-    
-    echo "Desde confirmAccount";
+  public static function message(Router $router){
+
+    $router->render('auth/message', [
+      'title' => 'Mensaje de confirmación'
+    ]);
+
+  }
+
+  public static function confirmAccount(Router $router){
+
+    $router->render('auth/confirmAccount', [
+      'title' => 'Confirmar cuenta'
+    ]);
 
   }
 

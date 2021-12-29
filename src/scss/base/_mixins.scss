@@ -2,46 +2,71 @@
 
 /** Media Queries **/
 @mixin phone {
-    @media (max-width: v.$phone) {
-        @content;
-    }
+	@media (max-width: v.$phone) {
+		@content;
+	}
 }
 @mixin tablet {
-    @media (max-width: v.$tablet) {
-        @content;
-    }
+	@media (max-width: v.$tablet) {
+		@content;
+	}
 }
 @mixin desktop {
-    @media (max-width: v.$desktop) {
-        @content;
-    }
+	@media (max-width: v.$desktop) {
+		@content;
+	}
 }
 
 
 @mixin button($bgColor, $textColor) {
-    background-color: $bgColor;
-    padding: 1.5rem 4rem;
-    color: $textColor;
-    font-size: 1.6rem;
-    display: inline-block;
-    font-weight: 700;
-    border: none;
-    transition-property: background-color;
-    transition-duration: .3s;
-    text-align: center;
-    width: auto;
-    @include tablet {
-        display: block;
-        width: 100%;
-    }
-    &:hover {
-        background-color: darken( $bgColor, 10% );
-        cursor: pointer;
-    }
+	background-color: $bgColor;
+	padding: 1.5rem 4rem;
+	color: $textColor;
+	font-size: 1.6rem;
+	display: inline-block;
+	font-weight: 700;
+	border: none;
+	transition-property: background-color;
+	transition-duration: .3s;
+	text-align: center;
+	width: auto;
+	@include tablet {
+		display: block;
+		width: 100%;
+	}
+	&:hover {
+		background-color: darken( $bgColor, 10% );
+		cursor: pointer;
+	}
 }
 
 @mixin grid($columns, $spacing ) {
-    display: grid;
-    gap: $spacing;
-    grid-template-columns: repeat($columns, 1fr);
+	display: grid;
+	gap: $spacing;
+	grid-template-columns: repeat($columns, 1fr);
+}
+
+@mixin gradientText($color){
+	.uptask{
+    background: linear-gradient(to right, $color 0%, lighten($color, 70%) 100%);
+    color: transparent;
+    background-clip: text;
+    text-align: center;
+    font-size: 6rem;
+    margin-top: 3rem;
+    
+    @include phone{
+      font-size: 4rem;
+    }
+  }
+
+  input[type="submit"]{
+    @include button($color, v.$white);
+  }
+
+  .actions{
+    a{
+      color: $color;
+    }
+  }
 }
