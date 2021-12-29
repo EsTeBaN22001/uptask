@@ -3,7 +3,8 @@
   <?php include_once(__DIR__ . './../templates/siteName.php'); ?>
 
   <div class="container-sm">
-    <p class="page-description">Confirmación de la cuenta.</p>
+
+    <?php include_once(__DIR__ . './../templates/alerts.php'); ?>
 
     <div class="actions">
       <a href="/">Iniciar sesión</a>
