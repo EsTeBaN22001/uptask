@@ -5,7 +5,7 @@
   <div class="container-sm">
     <p class="page-description">Iniciar sesión</p>
 
-    <form action="/" class="form">
+    <form action="/" class="form" method="POST">
       <div class="field">
         <label for="email">Correo electrónico</label>
         <input 

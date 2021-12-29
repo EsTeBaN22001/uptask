@@ -86,24 +86,103 @@ class LoginController{
 
   public static function forgotPassword(Router $router){
 
+    $alerts = [];
+    
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+      // Nueva instancia de un usuario
+      $user = new User($_POST);
+
+      // Validar el email
+      $alerts = $user->validateEmail();
+
+      if(empty($alerts)){
+
+        $user = User::where('email', $user->email);
+
+        if($user && $user->confirmed == 1){
+          
+          $user->createToken();
+          unset($user->password2);
+
+          // Crear una instancia del email y enviar las instrucciones
+          $email = new Email($user->email, $user->name, $user->token);
+          $email->sendInstructions();
+
+          // Guardar los cambios del usuario
+          $result = $user->save();
+
+          if($result){
+            User::setAlert('success', 'Hemos enviado las instrucciones a tu correo');
+          }
+
+        }else{
+          User::setAlert('error', 'El usuario no existe o no está confirmado');
+        }
+
+      }
 
     }
 
+    $alerts = User::getAlerts();
+
     $router->render('auth/forgotPassword', [
-      'title' => 'Recuperar contraseña'
+      'title' => 'Recuperar contraseña',
+      'alerts' => $alerts
     ]);
 
   }
 
   public static function resetPassword(Router $router){
+    
+    $token = s($_GET['token']);
 
+    // Mostrar el input de contraseña o no
+    $showInputPassword = true;
+
+    if(!$token) header('Location: /');
+
+    // Identificar al usuario con el token
+    $user = User::where('token', $token);
+    
+    if(empty($user)){
+      User::setAlert('error', 'Token no válido');
+      $showInputPassword = false;
+    }else{
+
+    }
+    
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+      // Sincronizar los datos del usuario con el post
+      $user->syncUp($_POST);
+      
+      // Validar la contraseña
+      $alerts = $user->validatePassword();
+
+      if(empty($alerts)){
+
+        $user->hashPassword();
+        unset($user->password2);
+        $user->token = null;
+
+        $result = $user->save();
+
+        if($result){
+          header('Location: /');
+        }
+
+      }
 
     }
 
+    // Obtener las alertas
+    $alerts = User::getAlerts();
+    
     $router->render('auth/reset-password', [
-      'title' => 'Reestablecer contraseña'
+      'title' => 'Reestablecer contraseña',
+      'alerts' => $alerts,
+      'showInputPassword' => $showInputPassword
     ]);
 
   }

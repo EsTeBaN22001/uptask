@@ -4,7 +4,8 @@
 
   <div class="container-sm">
     <p class="page-description">Recupera tu acceso a UpTask</p>
-    <form action="/forgot-password" class="form">
+    <?php include_once(__DIR__ . './../templates/alerts.php'); ?>
+    <form action="/forgot-password" class="form" method="POST">
       <div class="field">
         <label for="email">Correo electrónico</label>
         <input 
@@ -14,7 +15,7 @@
           placeholder="Ingresa tu correo electrónico"
         >
       </div>
-      <input type="submit" value="Recuperar" class="button">
+      <input type="submit" value="Enviar instrucciones" class="button">
     </form>
     <div class="actions">
       <a href="/">Ya tienes una cuenta? Inicia sesión</a>
