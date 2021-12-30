@@ -17,5 +17,15 @@
         text-align: center;
       }
     }
+
+    .form{
+      input:not([type="submit"]){
+        background-color: v.$white;
+      }
+      input[type="submit"]{
+        @include m.button(v.$indigo, v.$white);
+        padding: 1rem;
+      }
+    }
   }
 }
