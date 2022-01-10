@@ -68,6 +68,13 @@ class ActiveRecord {
         return array_shift( $result ) ;
     }
 
+    // Busca todos los registros que coincidan con un id
+    public static function belongsTo($column, $value) {
+        $query = "SELECT * FROM " . static::$table . " WHERE ${column} = '${value}'";
+        $result = self::consultSQL($query);
+        return $result;
+    }
+
     // SQL para Consultas Avanzadas.
     public static function SQL($query) {
         $result = self::consultSQL($query);

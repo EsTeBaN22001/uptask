@@ -1,0 +1,41 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.no-proyects{
+  a{
+    color: v.$indigo;
+  }
+}
+
+.list-proyects{
+  list-style: none;
+  padding: 0;
+  margin-top: 3rem;
+  @include m.grid(3, 1rem);
+
+  @include m.tablet{
+    @include m.grid(2, 1rem);
+  }
+
+  @include m.phone{
+    @include m.grid(1, 1rem);
+  }
+
+  .proyect{
+    a{
+      color: v.$white;
+      background-color: lighten(v.$indigo, 5%);
+      min-height: 12rem;
+      display: flex;
+      align-items: center;
+      padding: 2rem;
+      line-height: 2;
+      border-radius: 1rem;
+      transition: .3s ease all;
+      
+      &:hover{
+        background-color: darken(v.$indigo, 5%);
+      }
+    }
+  }
+}
