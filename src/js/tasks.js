@@ -1,4 +1,3 @@
-
 if(document.querySelector('.new-task-container')){
   
   // Botón para agregar una nueva tarea

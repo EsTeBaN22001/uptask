@@ -32,7 +32,7 @@ function css() {
 
 function javascript() {
     return src(paths.js)
-      .pipe(terser())
+      .pipe(concat('app.js'))
       .pipe(sourcemaps.write('.'))
       .pipe(dest('public/build/js'));
 }
