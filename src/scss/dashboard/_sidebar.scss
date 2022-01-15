@@ -14,6 +14,10 @@
   .sidebar-nav{
     margin-top: 5rem;
 
+    @include m.tablet{
+      margin-top: 1rem;
+    }
+
     a{
       color: v.$white;
       display: block;
