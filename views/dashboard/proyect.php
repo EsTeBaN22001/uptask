@@ -8,6 +8,7 @@
         id="add-task"
       >&#43; Nueva tarea</button>
     </div>
+    <ul class="list-tasks" id="list-tasks"></ul>
   </div>
 
 <?php include_once __DIR__ . './footer-dashboard.php'; ?>

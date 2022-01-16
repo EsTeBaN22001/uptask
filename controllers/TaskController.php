@@ -8,7 +8,17 @@ use Model\Task;
 class TaskController{
 
   public static function index(){
+    $proyectId = $_GET['url'];
+    
+    if(!$proyectId) header('Location: /dashboard');
 
+    $proyect = Proyect::where('url', $proyectId);
+    
+    if(!$proyect || $proyect->userId !== $_SESSION['id']) header('Location: /404');
+
+    $tasks = Task::belongsTo('proyectId', $proyect->id);
+    
+    echo json_encode(['tasks' => $tasks]);
   }
 
   public static function create(){
@@ -37,7 +47,8 @@ class TaskController{
         $response = [
           'type' => 'success',
           'message' => 'Se agregó la tarea con éxito',
-          'id' => $result['id']
+          'id' => $result['id'],
+          'proyectId' => $proyect->id
         ];
       }
 

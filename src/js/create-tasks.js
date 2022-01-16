@@ -1,7 +1,11 @@
+// Ruta para las peticiones fetch hacia la api
+const domain = 'http://localhost:3000';
+
+// Objeto global de las tareas
+let tasks = [];
+
 if(document.querySelector('.new-task-container')){
 
-  // Ruta para las peticiones fetch hacia la api
-  const domain = 'http://localhost:3000';
   
   // Botón para agregar una nueva tarea
   const newTaskBtn = document.querySelector('#add-task');
@@ -115,6 +119,18 @@ if(document.querySelector('.new-task-container')){
         setTimeout(() => {
           modal.remove();
         }, 3000);
+
+        // Agregar el objeto de tarea al global de tareas
+        const taskObj = {
+          id: String(result.id),
+          name: task,
+          state: '0',
+          proyectId: result.proyectId
+        }
+
+        tasks = [...tasks, taskObj];
+        showTasks();
+
       }
 
     } catch (error) {

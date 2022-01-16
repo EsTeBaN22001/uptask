@@ -9,3 +9,62 @@
     @include m.button(v.$cyan, v.$white);
   }
 }
+
+.list-tasks{
+  list-style: none;
+  padding: 0;
+  margin-top: 3rem;
+
+  .no-tasks{
+    text-align: center;
+  }
+}
+
+.task{
+  padding: .5rem 2rem;
+  border-bottom: 2px solid darken(v.$grayLight, 5%);
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  &:last-of-type{
+    border: none;
+  }
+  
+  p{
+   font-size: 1.4rem; 
+  }
+
+  .options{
+    display: flex;
+    gap: 1rem;
+
+    button{
+      border: none;
+      padding: .5rem 1rem;
+      font-size: 1.4rem;
+      font-weight: 600;
+      border-radius: 1.5rem;
+
+      &:hover{
+        cursor: pointer;
+      }
+    }
+
+    .completa{
+      background-color: v.$blue;
+      color: v.$white;
+    }
+
+    .pendiente{
+      background-color: v.$orange;
+      color: v.$white;
+    }
+    
+    .delete-task{
+      background-color: v.$red;
+      color: v.$white;
+    }
+  }
+}
