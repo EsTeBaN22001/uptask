@@ -64,6 +64,9 @@ if(document.querySelector('.new-task-container')){
       btnTaskStatus.classList.add(`${state[task.state].toLowerCase()}`);
       btnTaskStatus.textContent = state[task.state];
       btnTaskStatus.dataset.taskState = task.state;
+      btnTaskStatus.onclick = function(){
+        changeState({...task});
+      }
 
       const btnTaskDelete = document.createElement('button')
       btnTaskDelete.classList.add('delete-task');
@@ -87,6 +90,54 @@ if(document.querySelector('.new-task-container')){
 
     while(listTasks.firstChild){
       listTasks.removeChild(listTasks.firstChild);
+    }
+
+  }
+
+  function changeState(task){
+    const newState = task.state === '1' ? '0' : '1';
+    task.state = newState;
+    updateTask(task);
+  }
+
+  async function updateTask(task){
+    
+    const {id, name, state, proyectId} = task;
+    
+    const data = new FormData();
+    data.append('id', id);
+    data.append('name', name);
+    data.append('state', state);
+    data.append('proyectId', getProyect());
+
+    try{
+
+      const url = `${domain}/api/task/update`;
+      const response = await fetch(url, {
+        method: 'POST',
+        body: data
+      });
+      const result = await response.json();
+      
+      // if(result.type === 'success'){
+      //   showAlert(result.message, result.type, document.querySelector('.new-task-container'));
+      // }
+
+      // Actualizar el virtual DOM
+      tasks = tasks.map(memoryTask => {
+
+        if(memoryTask.id === id){
+          memoryTask.state = state;
+        }
+
+        return memoryTask;
+
+      })
+
+      showTasks();
+
+    }catch(error){
+      console.log(error)
     }
 
   }

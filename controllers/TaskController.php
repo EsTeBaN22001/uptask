@@ -59,7 +59,40 @@ class TaskController{
   }
 
   public static function update(){
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
+      // Validar que el proyecto exista
+      $proyect = Proyect::where('url', $_POST['proyectId']);
+      
+      if(!$proyect || $proyect->userId !== $_SESSION['id']){
+
+        $response = [
+          'error' => 'error',
+          'message' => 'Hubo un error al actualizar la tarea'
+        ];
+
+        return;
+
+      }
+
+      $task = new Task($_POST);
+      $task->proyectId = $proyect->id;
+      
+      $result = $task->save();
+
+      if($result){
+
+        $response = [
+          'type' => 'success',
+          'id' => $task->id,
+          'proyectId' => $proyect->id,
+          'message' => 'Actualizado correctamente'
+        ];
+
+      }
+
+      echo json_encode($response);
+    }
   }
 
   public static function delete(){
