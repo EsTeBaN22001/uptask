@@ -35,12 +35,6 @@ if(document.querySelector('.new-task-container')){
       
       if(result.result){
 
-        // showAlert(
-        //   result.message, 
-        //   result.type, 
-        //   document.querySelector('.new-task-container')
-        // )
-
         Swal.fire('Eliminado!', result.message, 'success')
           .then(()=>{
             tasks = tasks.filter( memoryTask => memoryTask.id !== task.id)

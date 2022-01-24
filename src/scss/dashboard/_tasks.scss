@@ -33,7 +33,11 @@
   }
   
   p{
-   font-size: 1.4rem; 
+   font-size: 1.4rem;
+
+   &:hover{
+     cursor: pointer;
+   }
   }
 
   .options{
