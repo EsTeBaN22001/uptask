@@ -40,8 +40,13 @@ $router->post('/create-proyect', [DashboardController::class, 'createProyect']);
 // Ver proyecto
 $router->get('/proyect', [DashboardController::class, 'proyect']);
 
-// Perfil
+// PERFIL
 $router->get('/profile', [DashboardController::class, 'profile']);
+$router->post('/profile', [DashboardController::class, 'profile']);
+
+// Cambiar el password
+$router->get('/change-password', [DashboardController::class, 'changePassword']);
+$router->post('/change-password', [DashboardController::class, 'changePassword']);
 
 // API para las tareas
 $router->get('/api/tasks', [TaskController::class, 'index']);

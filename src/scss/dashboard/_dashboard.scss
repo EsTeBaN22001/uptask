@@ -32,5 +32,13 @@
         padding: 1rem;
       }
     }
+
+    .link{
+      color: v.$indigo;
+
+      &:hover{
+        color: darken(v.$indigo, 20%);
+      }
+    }
   }
 }

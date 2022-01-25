@@ -14,6 +14,8 @@ class User extends ActiveRecord{
     $this->email = $args['email'] ?? '';
     $this->password = $args['password'] ?? '';
     $this->password2 = $args['password2'] ?? '';
+    $this->actualPassword = $args['actualPassword'] ?? '';
+    $this->newPassword = $args['newPassword'] ?? '';
     $this->token = $args['token'] ?? '';
     $this->confirmed = $args['confirmed'] ?? 0;
   }
@@ -91,6 +93,42 @@ class User extends ActiveRecord{
 
     return self::$alerts;
 
+  }
+
+  public function validateProfile(){
+
+    if(!$this->name){
+      self::$alerts['error'][] = 'El nombre es obligatorio';
+    }
+
+    if(!filter_var($this->email, FILTER_VALIDATE_EMAIL)){
+      self::$alerts['error'][] = 'Correo no válido';
+    }
+
+    return self::$alerts;
+
+  }
+
+  public function newPassword(){
+
+    if(!$this->actualPassword){
+      self::$alerts['error'][] = 'La contraseña actual no puede ir vacía';
+    }
+
+    if(!$this->newPassword){
+      self::$alerts['error'][] = 'La nueva contraseña no puede ir vacía';
+    }
+
+    if(strlen($this->newPassword) < 6){
+      self::$alerts['error'][] = 'La contraseña debe tener al menos 6 caracteres';
+    }
+
+    return self::$alerts;
+
+  }
+
+  public function verifyPassword(){
+    return password_verify($this->actualPassword, $this->password);
   }
 
   public function hashPassword(){
