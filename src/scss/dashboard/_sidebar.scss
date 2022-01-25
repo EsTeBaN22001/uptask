@@ -5,6 +5,10 @@
   background-color: v.$indigo;
   padding: 2rem;
 
+  @include m.tablet{
+    display: none;
+  }
+
   h2{
     color: v.$white;
     margin: 0;

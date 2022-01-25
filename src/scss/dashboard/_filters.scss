@@ -1,0 +1,55 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.filters{
+  background-color: lighten(v.$white, 20%);
+  margin-top: 2rem;
+  border-radius: 1rem;
+  padding: 2rem;
+
+  .input-filters{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 2rem;
+
+    @include m.tablet{
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 0;
+    }
+  }
+
+  h2{
+    color: v.$indigo;
+    margin-bottom: 0;
+    
+    @include m.tablet{
+      margin-bottom: 1rem;
+    }
+  }
+
+  .field{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    width: 30%;
+    
+    @include m.tablet{
+      margin-bottom: 2rem;
+      justify-content: space-between;
+    }
+
+    @include m.phone{
+      width: 100%;
+    }
+
+    input[type="radio"]{
+      accent-color: v.$indigo;
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+}

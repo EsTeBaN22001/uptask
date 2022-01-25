@@ -4,6 +4,8 @@ const domain = 'http://localhost:3000'
 
 // Objeto global de las tareas
 let tasks = []
+// Objeto global para las tareas filtradas
+let filtered = []
 
 if(document.querySelector('.new-task-container')){
 
@@ -211,6 +213,33 @@ if(document.querySelector('.new-task-container')){
   }
 
 }
+if(document.querySelector('.filters')){
+
+  const filters = document.querySelectorAll('#filters input[type="radio"]')
+
+  filters.forEach( radio => {
+    radio.addEventListener('input', taskFilter)
+  })
+
+}
+
+function taskFilter(e){
+  
+  const filter = e.target.value
+
+  if(filter !== ''){
+
+    filtered = tasks.filter( task => task.state === filter)
+    
+    showTasks()
+
+  }else{
+
+    filtered = []
+
+  }
+
+}
 if(document.querySelector('.new-task-container')){
 
   getTasks()
@@ -241,10 +270,18 @@ function showTasks(){
 
   // Eliminar las tareas anteriores para volver a generar el html con las mismas
   cleanTasks()
+
+  // Calcular el total de las tareas pendientes
+  pendingTotal()
+
+  // Calcular el total de las tareas completas
+  completedTotal()
+
+  const tasksArray = filtered.length ? filtered : tasks;  
   
   const listTasks = document.querySelector('#list-tasks')
 
-  if(tasks.length === 0){
+  if(tasksArray.length === 0){
 
     const noTasksText = document.createElement('li')
     noTasksText.classList.add('no-tasks')
@@ -261,7 +298,7 @@ function showTasks(){
     1: 'Completa'
   }
 
-  tasks.forEach(task=>{
+  tasksArray.forEach(task=>{
 
     const taskContainer = document.createElement('li')
     taskContainer.dataset.id = task.id
@@ -314,6 +351,35 @@ function cleanTasks(){
   }
 
 }
+
+function pendingTotal(){
+
+  const pendingTotal = tasks.filter( task => task.state === "0")
+
+  const pendingRadioButton = document.querySelector('#pending')
+
+  if(pendingTotal.length === 0){
+    pendingRadioButton.disabled = true;
+  }else{
+    pendingRadioButton.disabled = false;
+  }
+
+}
+
+function completedTotal(){
+
+  const completedTotal = tasks.filter( task => task.state === "1")
+
+  const completedRadioButton = document.querySelector('#completed')
+
+  if(completedTotal.length === 0){
+    completedRadioButton.disabled = true;
+  }else{
+    completedRadioButton.disabled = false;
+  }
+
+}
+
 
 function changeState(task){
   const newState = task.state === '1' ? '0' : '1'

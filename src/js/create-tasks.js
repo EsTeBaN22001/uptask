@@ -3,6 +3,8 @@ const domain = 'http://localhost:3000'
 
 // Objeto global de las tareas
 let tasks = []
+// Objeto global para las tareas filtradas
+let filtered = []
 
 if(document.querySelector('.new-task-container')){
 

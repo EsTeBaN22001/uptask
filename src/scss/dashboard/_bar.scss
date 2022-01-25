@@ -1,6 +1,30 @@
 @use 'base/variables' as v;
 @use 'base/mixins' as m;
 
+.mobile-bar{
+  display: none;
+
+  @include m.tablet{
+    background-color: v.$indigo;
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  h1{
+    color: v.$white;
+    margin: 0;
+  }
+
+  .menu{
+    img{
+      width: 3rem;
+      color: v.$white;
+    }
+  }
+}
+
 .bar{
   background-color: v.$white;
   padding: 1rem 2rem;
@@ -8,6 +32,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @include m.tablet{
+    display: none;
+  }
 
   p{
     margin: 0;

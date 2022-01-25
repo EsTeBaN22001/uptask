@@ -28,10 +28,18 @@ function showTasks(){
 
   // Eliminar las tareas anteriores para volver a generar el html con las mismas
   cleanTasks()
+
+  // Calcular el total de las tareas pendientes
+  pendingTotal()
+
+  // Calcular el total de las tareas completas
+  completedTotal()
+
+  const tasksArray = filtered.length ? filtered : tasks;  
   
   const listTasks = document.querySelector('#list-tasks')
 
-  if(tasks.length === 0){
+  if(tasksArray.length === 0){
 
     const noTasksText = document.createElement('li')
     noTasksText.classList.add('no-tasks')
@@ -48,7 +56,7 @@ function showTasks(){
     1: 'Completa'
   }
 
-  tasks.forEach(task=>{
+  tasksArray.forEach(task=>{
 
     const taskContainer = document.createElement('li')
     taskContainer.dataset.id = task.id
@@ -102,63 +110,30 @@ function cleanTasks(){
 
 }
 
-function changeState(task){
-  const newState = task.state === '1' ? '0' : '1'
-  task.state = newState
-  updateTask(task)
+function pendingTotal(){
+
+  const pendingTotal = tasks.filter( task => task.state === "0")
+
+  const pendingRadioButton = document.querySelector('#pending')
+
+  if(pendingTotal.length === 0){
+    pendingRadioButton.disabled = true;
+  }else{
+    pendingRadioButton.disabled = false;
+  }
+
 }
 
-async function updateTask(task){
-  
-  const {id, name, state, proyectId} = task
-  
-  const data = new FormData()
-  data.append('id', id)
-  data.append('name', name)
-  data.append('state', state)
-  data.append('proyectId', getProyect())
+function completedTotal(){
 
-  try{
+  const completedTotal = tasks.filter( task => task.state === "1")
 
-    const url = `${domain}/api/task/update`
-    const response = await fetch(url, {
-      method: 'POST',
-      body: data
-    })
-    const result = await response.json()
-    
-    if(result.type === 'success'){
+  const completedRadioButton = document.querySelector('#completed')
 
-      Swal.fire(
-        result.message,
-        '',
-        'success'
-      )
-
-      const modal = document.querySelector('.modal')
-      
-      if(modal){
-        modal.remove()
-      }
-
-      // Actualizar el virtual DOM
-      tasks = tasks.map(memoryTask => {
-
-        if(memoryTask.id === id){
-          memoryTask.state = state
-          memoryTask.name = name
-        }
-
-        return memoryTask
-
-      })
-
-      showTasks()
-
-    }
-
-  }catch(error){
-    console.log(error)
+  if(completedTotal.length === 0){
+    completedRadioButton.disabled = true;
+  }else{
+    completedRadioButton.disabled = false;
   }
 
 }
