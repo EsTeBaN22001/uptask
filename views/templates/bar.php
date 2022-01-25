@@ -1,7 +1,9 @@
 <div class="mobile-bar">
-  <h1>UpTask</h1>
-  <div class="menu">
-    <img src="/build/img/menu.svg" alt="Ícono del menú mobil">
+  <a href="/dashboard">
+    <h1>UpTask</h1>
+  </a>
+  <div class="menu" id="menu">
+    <img id="mobile-menu" src="/build/img/menu.svg" alt="Ícono del menú mobil">
   </div>
 </div>
 

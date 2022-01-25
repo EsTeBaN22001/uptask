@@ -4,15 +4,26 @@
 .sidebar{
   background-color: v.$indigo;
   padding: 2rem;
-
+  transition: all .3s ease;
+  
   @include m.tablet{
-    display: none;
+    padding: 0;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
   }
 
   h2{
     color: v.$white;
     margin: 0;
     text-align: center;
+  }
+
+  &.show{
+    opacity: 1;
+    height: auto;
+    padding: 2rem;
+    overflow: visible;
   }
 
   .sidebar-nav{

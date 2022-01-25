@@ -379,7 +379,18 @@ function completedTotal(){
   }
 
 }
+if(document.querySelector('.mobile-bar')){
 
+  const mobileMenuButton = document.querySelector('#menu')
+  const sidebar = document.querySelector('.sidebar')
+  
+  if(mobileMenuButton){
+    mobileMenuButton.addEventListener('click', function(){
+      sidebar.classList.toggle('show')
+    })
+  }
+  
+}
 
 function changeState(task){
   const newState = task.state === '1' ? '0' : '1'
