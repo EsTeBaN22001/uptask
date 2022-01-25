@@ -5,17 +5,19 @@ namespace Model;
 class User extends ActiveRecord{
 
   protected static $table = 'users';
-  protected static $columnsDB = ['id', 'name', 'email', 'password', 'token', 'confirmed'];
+  protected static $columnsDB = ['id', 'uniqId', 'name', 'email', 'password', 'keyword'];
 
   public function __construct($args = [])
   {
     $this->id = $args['id'] ?? null;
+    $this->uniqId = $args['uniqId'] ?? null;
     $this->name = $args['name'] ?? '';
     $this->email = $args['email'] ?? '';
     $this->password = $args['password'] ?? '';
     $this->password2 = $args['password2'] ?? '';
-    $this->token = $args['token'] ?? '';
-    $this->confirmed = $args['confirmed'] ?? 0;
+    $this->actualPassword = $args['actualPassword'] ?? '';
+    $this->newPassword = $args['newPassword'] ?? '';
+    $this->keyword = $args['keyword'] ?? '';
   }
 
   public function validateNewAccount(){
@@ -38,6 +40,10 @@ class User extends ActiveRecord{
 
     if($this->password !== $this->password2){
       self::$alerts['error'][] = 'Las contraseñas no coinciden';
+    }
+
+    if(!$this->keyword){
+      self::$alerts['error'][] = 'La palabra clave es obligatoria';
     }
 
     return self::$alerts;
@@ -93,12 +99,48 @@ class User extends ActiveRecord{
 
   }
 
+  public function validateProfile(){
+
+    if(!$this->name){
+      self::$alerts['error'][] = 'El nombre es obligatorio';
+    }
+
+    if(!filter_var($this->email, FILTER_VALIDATE_EMAIL)){
+      self::$alerts['error'][] = 'Correo no válido';
+    }
+
+    return self::$alerts;
+
+  }
+
+  public function newPassword(){
+
+    if(!$this->actualPassword){
+      self::$alerts['error'][] = 'La contraseña actual no puede ir vacía';
+    }
+
+    if(!$this->newPassword){
+      self::$alerts['error'][] = 'La nueva contraseña no puede ir vacía';
+    }
+
+    if(strlen($this->newPassword) < 6){
+      self::$alerts['error'][] = 'La contraseña debe tener al menos 6 caracteres';
+    }
+
+    return self::$alerts;
+
+  }
+
+  public function verifyPassword(){
+    return password_verify($this->actualPassword, $this->password);
+  }
+
   public function hashPassword(){
     $this->password = password_hash($this->password, PASSWORD_BCRYPT);
   }
 
-  public function createToken(){
-    $this->token = md5(uniqid());
+  public function hashKeyword(){
+    $this->keyword = password_hash($this->keyword, PASSWORD_BCRYPT);
   }
 
   public function startSession(){

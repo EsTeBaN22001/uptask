@@ -46,6 +46,16 @@
           placeholder="Repetir contraseña"
         >
       </div>
+      <div class="field">
+        <label for="keyword">Palabra clave</label>
+        <input 
+          type="password"
+          id="keyword"
+          name="keyword"
+          placeholder="Palabra clave"
+        >
+      </div>
+      <span>*Palabra clave en caso de olvidar la contraseña</span>
       <input type="submit" value="Crear cuenta" class="button">
     </form>
     <div class="actions">
