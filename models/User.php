@@ -17,7 +17,12 @@ class User extends ActiveRecord{
     $this->password2 = $args['password2'] ?? '';
     $this->actualPassword = $args['actualPassword'] ?? '';
     $this->newPassword = $args['newPassword'] ?? '';
+<<<<<<< HEAD
     $this->keyword = $args['keyword'] ?? '';
+=======
+    $this->token = $args['token'] ?? '';
+    $this->confirmed = $args['confirmed'] ?? 0;
+>>>>>>> 21a60bbecbbb6be703dff4d440bbfebc39cf0182
   }
 
   public function validateNewAccount(){
