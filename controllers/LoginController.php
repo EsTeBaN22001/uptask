@@ -144,13 +144,22 @@ class LoginController{
             header('Location: /reset-password?idUser=' . $verifyKeyword->uniqId);
           }else{
               User::setAlert('error', 'La palabra clave no coincide');
+<<<<<<< HEAD
           }
           // Guardar los cambios del usuario
           $result = $user->save();
 
           if($result){
             User::setAlert('success', 'Hemos enviado las instrucciones a tu correo');
+=======
+>>>>>>> 9676f906d1503f26d1ce1eb477505f3e3c9309e7
           }
+          // Guardar los cambios del usuario
+          // $result = $user->save();
+
+          // if($result){
+          //   User::setAlert('success', 'Hemos enviado las instrucciones a tu correo');
+          // }
 
         }else{
           User::setAlert('error', 'El usuario no existe o no está confirmado');
