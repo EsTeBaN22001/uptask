@@ -1,5 +1,7 @@
 <aside class="sidebar">
-  <h2>UpTask</h2>
+  <a href="/dashboard">
+    <h2>UpTask</h2>
+  </a>
   <nav class="sidebar-nav">
     <a class="<?= ($title === 'Proyectos') ? 'active' : '';  ?>" href="/dashboard">Proyectos</a>
     <a class="<?= ($title === 'Crear proyecto') ? 'active' : '';  ?>" href="/create-proyect">Crear proyecto</a>

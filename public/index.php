@@ -48,6 +48,10 @@ $router->post('/profile', [DashboardController::class, 'profile']);
 $router->get('/change-password', [DashboardController::class, 'changePassword']);
 $router->post('/change-password', [DashboardController::class, 'changePassword']);
 
+// Cambiar la keyword
+$router->get('/change-keyword', [DashboardController::class, 'changeKeyword']);
+$router->post('/change-keyword', [DashboardController::class, 'changeKeyword']);
+
 // API para las tareas
 $router->get('/api/tasks', [TaskController::class, 'index']);
 $router->post('/api/task/create', [TaskController::class, 'create']);

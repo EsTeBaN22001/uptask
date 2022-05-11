@@ -28,3 +28,8 @@ a {
 img {
     max-width: 100%;
 }
+// Desactivar ventana de 000webhost
+.disclaimer{
+	opacity: 0 !important;
+    z-index: -1000 !important;
+}

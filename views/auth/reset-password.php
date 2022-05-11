@@ -23,7 +23,7 @@
     <?php endif; ?>
     <div class="actions">
       <a href="/create-account">Aún no tienes cuenta? Crear una</a>
-      <a href="/forgot-password">¿Olvidaste tu contraseña?</a>
+      <a href="/">Ya tienes una cuenta? Inicia Sesión</a>
     </div>
   </div>
 </div>

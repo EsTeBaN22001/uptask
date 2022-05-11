@@ -7,15 +7,24 @@
     <?php include_once(__DIR__ . './../templates/alerts.php'); ?>
     <form action="/forgot-password" class="form" method="POST">
       <div class="field">
-        <label for="email">Correo electrónico</label>
+        <label for="keyword">Correo electrónico:</label>
         <input 
           type="email"
           id="email"
           name="email"
-          placeholder="Ingresa tu correo electrónico"
+          placeholder="Ingresa su correo electrónico"
         >
       </div>
-      <input type="submit" value="Enviar instrucciones" class="button">
+      <div class="field">
+        <label for="keyword">Palabra clave:</label>
+        <input 
+          type="password"
+          id="keyword"
+          name="keyword"
+          placeholder="Ingresa la palabra clave"
+        >
+      </div>
+      <input type="submit" value="Verificar" class="button">
     </form>
     <div class="actions">
       <a href="/">Ya tienes una cuenta? Inicia sesión</a>

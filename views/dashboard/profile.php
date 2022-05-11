@@ -1,7 +1,7 @@
-<?php include_once __DIR__ . './header-dashboard.php'; ?>
+<?php include_once __DIR__ . '/header-dashboard.php'; ?>
 
 <div class="container-sm">
-  <a href="/change-password" class="link">Cambiar contraseña</a>
+  <a href="/change-password" class="link">Cambiar contraseña</a> | <a href="/change-keyword">Cambiar palabra clave</a>
 
   <?php include_once __DIR__ . './../templates/alerts.php'; ?>
 
@@ -30,4 +30,4 @@
   </form>
 </div>
 
-<?php include_once __DIR__ . './footer-dashboard.php'; ?>
+<?php include_once __DIR__ . '/footer-dashboard.php'; ?>

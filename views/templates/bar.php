@@ -8,6 +8,6 @@
 </div>
 
 <div class="bar">
-  <p>Hola: <span><?= $_SESSION['name']; ?></span></p>
+  <p>Hola: <a href="/profile"><span><?= $_SESSION['name']; ?></span></a></p>
   <a href="/logout" class="logout">Cerrar sesión</a>
 </div>

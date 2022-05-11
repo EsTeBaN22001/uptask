@@ -22,7 +22,7 @@ class Router
 
         session_start();
 		// Arreglo de rutas protegidas...
-		$protectedRoutes = ['/dashboard', '/create-proyect', '/profile', '/profile', '/change-password', '/api/tasks', '/api/task/create', '/api/task/update', '/api/task/delete'];
+		$protectedRoutes = ['/dashboard', '/create-proyect', '/profile', '/profile', '/change-password', '/change-keyword','/api/tasks', '/api/task/create', '/api/task/update', '/api/task/delete'];
 
 		$auth = $_SESSION['login'] ?? null;
 

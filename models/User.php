@@ -5,19 +5,19 @@ namespace Model;
 class User extends ActiveRecord{
 
   protected static $table = 'users';
-  protected static $columnsDB = ['id', 'name', 'email', 'password', 'token', 'confirmed'];
+  protected static $columnsDB = ['id', 'uniqId', 'name', 'email', 'password', 'keyword'];
 
   public function __construct($args = [])
   {
     $this->id = $args['id'] ?? null;
+    $this->uniqId = $args['uniqId'] ?? null;
     $this->name = $args['name'] ?? '';
     $this->email = $args['email'] ?? '';
     $this->password = $args['password'] ?? '';
     $this->password2 = $args['password2'] ?? '';
     $this->actualPassword = $args['actualPassword'] ?? '';
     $this->newPassword = $args['newPassword'] ?? '';
-    $this->token = $args['token'] ?? '';
-    $this->confirmed = $args['confirmed'] ?? 0;
+    $this->keyword = $args['keyword'] ?? '';
   }
 
   public function validateNewAccount(){
@@ -40,6 +40,10 @@ class User extends ActiveRecord{
 
     if($this->password !== $this->password2){
       self::$alerts['error'][] = 'Las contraseñas no coinciden';
+    }
+
+    if(!$this->keyword){
+      self::$alerts['error'][] = 'La palabra clave es obligatoria';
     }
 
     return self::$alerts;
@@ -135,8 +139,15 @@ class User extends ActiveRecord{
     $this->password = password_hash($this->password, PASSWORD_BCRYPT);
   }
 
-  public function createToken(){
-    $this->token = md5(uniqid());
+  public function validateKeyword(){
+    if(!$this->keyword){
+      self::$alerts['error'][] = 'La palabra clave no puede ir vacía.';
+    }
+    return self::$alerts;
+  }
+
+  public function hashKeyword(){
+    $this->keyword = password_hash($this->keyword, PASSWORD_BCRYPT);
   }
 
   public function startSession(){

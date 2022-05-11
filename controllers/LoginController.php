@@ -2,7 +2,6 @@
 
 namespace Controllers;
 
-use Classes\Email;
 use Model\User;
 use MVC\Router;
 
@@ -26,8 +25,8 @@ class LoginController{
 
         $auth = User::where('email', $user->email);
 
-        if(!$auth || !$auth->confirmed){
-          User::setAlert('error', 'El usuario no existe o no está confirmado');
+        if(!$auth){
+          User::setAlert('error', 'El usuario no existe');
         }else{
 
           // Verificar la contraseña
@@ -82,27 +81,26 @@ class LoginController{
         $userExists = User::where('email', $user->email);
         
         if($userExists){
-          $alerts = User::setAlert('error', 'El usuario ya existe');
+          $alerts = User::setAlert('error', 'El correo ya está en uso');
         }else{
+
+          // Generar una URL única para el proyecto
+          $user->uniqId = md5(uniqid());
           
           // Hashear la contraseña
           $user->hashPassword();
 
+          // Hashear la palabra clave
+          $user->hashKeyword();
+
           // Eliminar password2
           unset($user->password2);
-          
-          // Crear un token único
-          $user->createToken();
           
           // Crear usuario
           $result = $user->save();
 
-          // Enviar email
-          $email = new Email($user->email, $user->name, $user->token);
-          $email->sendConfirmation();
-
           if($result){
-            header('Location: /message');
+            header('Location: /dashboard');
           }
 
         }
@@ -129,23 +127,24 @@ class LoginController{
 
       // Nueva instancia de un usuario
       $user = new User($_POST);
-
+      
       // Validar el email
       $alerts = $user->validateEmail();
-
+      
       if(empty($alerts)){
 
-        $user = User::where('email', $user->email);
+        $auth = User::where('email', $user->email);
 
-        if($user && $user->confirmed == 1){
-          
-          $user->createToken();
-          unset($user->password2);
+        if($auth){
 
-          // Crear una instancia del email y enviar las instrucciones
-          $email = new Email($user->email, $user->name, $user->token);
-          $email->sendInstructions();
+          // Verificar que la keyword sea correcta
+          $verifyKeyword = User::belongsTo('keyword', $auth->keyword)[0];
 
+          if(password_verify($user->keyword, $verifyKeyword->keyword)){
+            header('Location: /reset-password?idUser=' . $verifyKeyword->uniqId);
+          }else{
+              User::setAlert('error', 'La palabra clave no coincide');
+          }
           // Guardar los cambios del usuario
           $result = $user->save();
 
@@ -172,18 +171,18 @@ class LoginController{
 
   public static function resetPassword(Router $router){
     
-    $token = s($_GET['token']);
-
-    // Mostrar el input de contraseña o no
+    // Mostrar el input de la contraseña
     $showInputPassword = true;
+    
+    $uniqId = s($_GET['idUser']);
 
-    if(!$token) header('Location: /');
+    if(!$uniqId) header('Location: /');
 
     // Identificar al usuario con el token
-    $user = User::where('token', $token);
+    $user = User::where('uniqId', $uniqId);
     
     if(empty($user)){
-      User::setAlert('error', 'Token no válido');
+      User::setAlert('error', 'Usuario no válido');
       $showInputPassword = false;
     }else{
 
@@ -201,7 +200,6 @@ class LoginController{
 
         $user->hashPassword();
         unset($user->password2);
-        $user->token = null;
 
         $result = $user->save();
 
@@ -231,43 +229,6 @@ class LoginController{
     ]);
 
   }
-
-  public static function confirmAccount(Router $router){
-
-    $token = $_GET['token'];
-    
-    if(!$token){
-      header('Location: /');
-    }
-
-    // Encontrar al usuario con el token
-    $user = User::where('token', $token);
-    
-    if(empty($user)){
-      User::setAlert('error', 'Token no válido');
-    }else{
-
-      $user->confirmed = 1;
-      $user->token = null;
-      unset($user->password2);
-      
-      $result = $user->save();
-
-      if($result){
-        User::setAlert('success', 'Cuenta confirmada correctamente');
-      }
-
-    }
-
-    $alerts = User::getAlerts();
-    
-    $router->render('auth/confirmAccount', [
-      'title' => 'Confirmar cuenta',
-      'alerts' => $alerts
-    ]);
-
-  }
-
 
 }
 

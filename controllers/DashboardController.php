@@ -179,6 +179,45 @@ class DashboardController{
 
   }
 
+  public static function changeKeyword(Router $router){
+
+    $alerts = [];
+
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+      $user = User::find($_SESSION['id']);
+
+      $user->syncUp($_POST);
+      
+      $alerts = $user->validateKeyword();
+
+      if(empty($alerts)){
+
+        $user->hashKeyword();
+        
+        $result = $user->save();
+
+        debuguear($user);
+
+        if($result){
+          User::setAlert('success', 'Contraseña guardada correctamente');
+        }else{
+          User::setAlert('error', 'Hubo un problema, intente de nuevo');
+        }
+
+      }
+
+    }
+
+    $alerts = User::getAlerts();
+      
+    $router->render('dashboard/change-keyword', [
+      'title' => 'Cambiar palabra clave',
+      'alerts' => $alerts
+    ]);
+
+  }
+
 }
 
 ?>
