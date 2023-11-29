@@ -1,243 +1,242 @@
-<?php 
+<?php
 
 namespace Controllers;
 
 use Model\User;
 use MVC\Router;
 
-class LoginController{
+class LoginController {
 
-  public static function login(Router $router){
-  
-    $alerts = [];
+	public static function login(Router $router) {
 
-    $user = new User();
+		$alerts = [];
 
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+		$user = new User();
 
-      // Sincronizar los datos del post con una instancia de usuario
-      $user->syncUp($_POST);
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-      // Validar campos
-      $alerts = $user->validateLogin();
+			// Sincronizar los datos del post con una instancia de usuario
+			$user->syncUp($_POST);
 
-      if(empty($alerts)){
+			// Validar campos
+			$alerts = $user->validateLogin();
 
-        $auth = User::where('email', $user->email);
+			if (empty($alerts)) {
 
-        if(!$auth){
-          User::setAlert('error', 'El usuario no existe');
-        }else{
+				$auth = User::where('email', $user->email);
 
-          // Verificar la contraseña
-          if(password_verify($user->password, $auth->password)){
-            
-            $auth->startSession();
+				if (!$auth) {
+					User::setAlert('error', 'El usuario no existe');
+				} else {
 
-            // Redireccionar al usuario
-            header('Location: /dashboard');
+					// Verificar la contraseña
+					if (password_verify($user->password, $auth->password)) {
 
-          }else{
-            User::setAlert('error', 'La contraseña es incorrecta');
-          }
+						$auth->startSession();
 
-        }
+						// Redireccionar al usuario
+						header('Location: /dashboard');
 
-      }
+					} else {
+						User::setAlert('error', 'La contraseña es incorrecta');
+					}
 
-    }
+				}
 
-    $alerts = User::getAlerts();
+			}
 
-    $router->render('auth/login', [
-      'title' => 'Iniciar sesión',
-      'alerts' => $alerts,
-      'user' => $user
-    ]);
+		}
 
-  }
+		$alerts = User::getAlerts();
 
-  public static function logout(){
-    session_unset();
-    header('Location: /');
-  }
+		$router->render('auth/login', [
+			'title' => 'Iniciar sesión',
+			'alerts' => $alerts,
+			'user' => $user,
+		]);
 
-  public static function createAccount(Router $router){
+	}
 
-    // Nueva instancia de usuario
-    $user = new User();
-    
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+	public static function logout() {
+		session_unset();
+		header('Location: /');
+	}
 
-      // Sincronizar los datos del post con la instancia de usuario
-      $user->syncUp($_POST);
+	public static function createAccount(Router $router) {
 
-      // Validar los campos
-      $alerts = $user->validateNewAccount();
+		// Nueva instancia de usuario
+		$user = new User();
 
-      if(empty($alerts)){
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        // Verificar si un usuario existe
-        $userExists = User::where('email', $user->email);
-        
-        if($userExists){
-          $alerts = User::setAlert('error', 'El correo ya está en uso');
-        }else{
+			// Sincronizar los datos del post con la instancia de usuario
+			$user->syncUp($_POST);
 
-          // Generar una URL única para el proyecto
-          $user->uniqId = md5(uniqid());
-          
-          // Hashear la contraseña
-          $user->hashPassword();
+			// Validar los campos
+			$alerts = $user->validateNewAccount();
 
-          // Hashear la palabra clave
-          $user->hashKeyword();
+			if (empty($alerts)) {
 
-          // Eliminar password2
-          unset($user->password2);
-          
-          // Crear usuario
-          $result = $user->save();
+				// Verificar si un usuario existe
+				$userExists = User::where('email', $user->email);
 
-          if($result){
-            header('Location: /dashboard');
-          }
+				if ($userExists) {
+					$alerts = User::setAlert('error', 'El correo ya está en uso');
+				} else {
 
-        }
+					// Generar una URL única para el proyecto
+					$user->uniqId = md5(uniqid());
 
-      }
-
-    }
+					// Hashear la contraseña
+					$user->hashPassword();
 
-    $alerts = $user->getAlerts();
+					// Hashear la palabra clave
+					$user->hashKeyword();
 
-    $router->render('auth/createAccount', [
-      'title' => 'Crear cuenta',
-      'user' => $user,
-      'alerts' => $alerts
-    ]);
+					// Eliminar password2
+					unset($user->password2);
 
-  }
+					// Crear usuario
+					$result = $user->save();
 
-  public static function forgotPassword(Router $router){
+					if ($result) {
+						header('Location: /dashboard');
+					}
 
-    $alerts = [];
-    
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+				}
 
-      // Nueva instancia de un usuario
-      $user = new User($_POST);
-      
-      // Validar el email
-      $alerts = $user->validateEmail();
-      
-      if(empty($alerts)){
+			}
 
-        $auth = User::where('email', $user->email);
+		}
 
-        if($auth){
+		$alerts = $user->getAlerts();
 
-          // Verificar que la keyword sea correcta
-          $verifyKeyword = User::belongsTo('keyword', $auth->keyword)[0];
+		$router->render('auth/createAccount', [
+			'title' => 'Crear cuenta',
+			'user' => $user,
+			'alerts' => $alerts,
+		]);
 
-          if(password_verify($user->keyword, $verifyKeyword->keyword)){
-            header('Location: /reset-password?idUser=' . $verifyKeyword->uniqId);
-          }else{
-              User::setAlert('error', 'La palabra clave no coincide');
-<<<<<<< HEAD
-          }
-          // Guardar los cambios del usuario
-          $result = $user->save();
+	}
 
-          if($result){
-            User::setAlert('success', 'Hemos enviado las instrucciones a tu correo');
-=======
->>>>>>> 9676f906d1503f26d1ce1eb477505f3e3c9309e7
-          }
-          // Guardar los cambios del usuario
-          // $result = $user->save();
+	public static function forgotPassword(Router $router) {
 
-          // if($result){
-          //   User::setAlert('success', 'Hemos enviado las instrucciones a tu correo');
-          // }
+		$alerts = [];
 
-        }else{
-          User::setAlert('error', 'El usuario no existe o no está confirmado');
-        }
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-      }
+			// Nueva instancia de un usuario
+			$user = new User($_POST);
 
-    }
+			// Validar el email
+			$alerts = $user->validateEmail();
 
-    $alerts = User::getAlerts();
+			if (empty($alerts)) {
 
-    $router->render('auth/forgotPassword', [
-      'title' => 'Recuperar contraseña',
-      'alerts' => $alerts
-    ]);
+				$auth = User::where('email', $user->email);
 
-  }
+				if ($auth) {
 
-  public static function resetPassword(Router $router){
-    
-    // Mostrar el input de la contraseña
-    $showInputPassword = true;
-    
-    $uniqId = s($_GET['idUser']);
+					// Verificar que la keyword sea correcta
+					$verifyKeyword = User::belongsTo('keyword', $auth->keyword)[0];
 
-    if(!$uniqId) header('Location: /');
+					if (password_verify($user->keyword, $verifyKeyword->keyword)) {
+						header('Location: /reset-password?idUser=' . $verifyKeyword->uniqId);
+					} else {
+						User::setAlert('error', 'La palabra clave no coincide');
+					}
+					// Guardar los cambios del usuario
+					$result = $user->save();
 
-    // Identificar al usuario con el token
-    $user = User::where('uniqId', $uniqId);
-    
-    if(empty($user)){
-      User::setAlert('error', 'Usuario no válido');
-      $showInputPassword = false;
-    }else{
+					if ($result) {
+						User::setAlert('success', 'Hemos enviado las instrucciones a tu correo');
+					}
+					// Guardar los cambios del usuario
+					// $result = $user->save();
 
-    }
-    
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+					// if($result){
+					//   User::setAlert('success', 'Hemos enviado las instrucciones a tu correo');
+					// }
 
-      // Sincronizar los datos del usuario con el post
-      $user->syncUp($_POST);
-      
-      // Validar la contraseña
-      $alerts = $user->validatePassword();
+				} else {
+					User::setAlert('error', 'El usuario no existe o no está confirmado');
+				}
 
-      if(empty($alerts)){
+			}
 
-        $user->hashPassword();
-        unset($user->password2);
+		}
 
-        $result = $user->save();
+		$alerts = User::getAlerts();
 
-        if($result){
-          header('Location: /');
-        }
+		$router->render('auth/forgotPassword', [
+			'title' => 'Recuperar contraseña',
+			'alerts' => $alerts,
+		]);
 
-      }
+	}
 
-    }
+	public static function resetPassword(Router $router) {
 
-    // Obtener las alertas
-    $alerts = User::getAlerts();
-    
-    $router->render('auth/reset-password', [
-      'title' => 'Reestablecer contraseña',
-      'alerts' => $alerts,
-      'showInputPassword' => $showInputPassword
-    ]);
+		// Mostrar el input de la contraseña
+		$showInputPassword = true;
 
-  }
+		$uniqId = s($_GET['idUser']);
 
-  public static function message(Router $router){
+		if (!$uniqId) {
+			header('Location: /');
+		}
 
-    $router->render('auth/message', [
-      'title' => 'Mensaje de confirmación'
-    ]);
+		// Identificar al usuario con el token
+		$user = User::where('uniqId', $uniqId);
 
-  }
+		if (empty($user)) {
+			User::setAlert('error', 'Usuario no válido');
+			$showInputPassword = false;
+		} else {
+
+		}
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+			// Sincronizar los datos del usuario con el post
+			$user->syncUp($_POST);
+
+			// Validar la contraseña
+			$alerts = $user->validatePassword();
+
+			if (empty($alerts)) {
+
+				$user->hashPassword();
+				unset($user->password2);
+
+				$result = $user->save();
+
+				if ($result) {
+					header('Location: /');
+				}
+
+			}
+
+		}
+
+		// Obtener las alertas
+		$alerts = User::getAlerts();
+
+		$router->render('auth/reset-password', [
+			'title' => 'Reestablecer contraseña',
+			'alerts' => $alerts,
+			'showInputPassword' => $showInputPassword,
+		]);
+
+	}
+
+	public static function message(Router $router) {
+
+		$router->render('auth/message', [
+			'title' => 'Mensaje de confirmación',
+		]);
+
+	}
 
 }
 
