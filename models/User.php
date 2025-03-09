@@ -17,16 +17,9 @@ class User extends ActiveRecord{
     $this->password2 = $args['password2'] ?? '';
     $this->actualPassword = $args['actualPassword'] ?? '';
     $this->newPassword = $args['newPassword'] ?? '';
-<<<<<<< HEAD
     $this->keyword = $args['keyword'] ?? '';
-=======
-<<<<<<< HEAD
-    $this->keyword = $args['keyword'] ?? '';
-=======
     $this->token = $args['token'] ?? '';
     $this->confirmed = $args['confirmed'] ?? 0;
->>>>>>> 21a60bbecbbb6be703dff4d440bbfebc39cf0182
->>>>>>> 9676f906d1503f26d1ce1eb477505f3e3c9309e7
   }
 
   public function validateNewAccount(){
@@ -148,7 +141,6 @@ class User extends ActiveRecord{
     $this->password = password_hash($this->password, PASSWORD_BCRYPT);
   }
 
-<<<<<<< HEAD
   public function validateKeyword(){
     if(!$this->keyword){
       self::$alerts['error'][] = 'La palabra clave no puede ir vacía.';
@@ -156,8 +148,6 @@ class User extends ActiveRecord{
     return self::$alerts;
   }
 
-=======
->>>>>>> 9676f906d1503f26d1ce1eb477505f3e3c9309e7
   public function hashKeyword(){
     $this->keyword = password_hash($this->keyword, PASSWORD_BCRYPT);
   }

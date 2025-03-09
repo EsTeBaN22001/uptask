@@ -27,18 +27,20 @@ class DashboardController{
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
       
       $proyect = new Proyect($_POST);
+
       
       // Validación del proyecto
       $alerts = $proyect->validateProyect();
 
+      
       if(empty($alerts)){
-
+        
         // Generar una URL única para el proyecto
         $proyect->url = md5(uniqid());
         
         // Obtener el id del usuario que creó el proyecto
         $proyect->userId = $_SESSION['id'];
-        
+
         $result = $proyect->save();
 
         if($result){
