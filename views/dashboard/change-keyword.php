@@ -3,7 +3,7 @@
 <div class="container-sm">
 <a href="/profile" class="link">Volver al perfíl</a>
   
-  <?php include_once __DIR__ . './../templates/alerts.php'; ?>
+  <?php include_once __DIR__ . '/../templates/alerts.php'; ?>
 
   <form action="/change-keyword" class="form" method="POST">
     <div class="field">
